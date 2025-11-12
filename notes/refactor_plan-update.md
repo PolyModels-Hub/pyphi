@@ -35,19 +35,23 @@ pyphi/                                # Project root
 │   ├── test_diagnostics.py
 │   └── test_exports.py
 │
+├── notes/                            # Documentation & refactor tracking
+│   ├── refactor_plan-update.md      # Full refactor plan (this file)
+│   ├── dev_environment_setup.md     # Development environment guide
+│   └── refactor_changelog.md        # Log of duplicated functions & tests
+│
 ├── examples/                         # Existing examples (refactored gradually)
 │   ├── Basic calculations PCA and PLS/
 │   ├── ...
 │   └── (update imports as modules are completed)
 │
-├── pyproject.toml                    # Updated with new structure
-├── poetry.lock
-├── pytest.ini                        # NEW: Pytest configuration
-├── setup.py                          # Updated entry points
+├── pyproject.toml                    # Poetry configuration
+├── poetry.lock                       # Locked dependencies
+├── pytest.ini                        # Pytest configuration
+├── setup.py                          # Setup configuration
 ├── requirements.txt                  # Keep for compatibility
 ├── README.md
-├── LICENSE
-└── refactor_plan-update.md
+└── LICENSE
 ```
 
 ---
