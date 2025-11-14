@@ -35,12 +35,12 @@ pyphi/                                # Project root
 │   ├── test_diagnostics.py
 │   └── test_exports.py
 │
-├── notes/                            # Documentation & refactor tracking
+├── notes/                           # Documentation & refactor tracking
 │   ├── refactor_plan-update.md      # Full refactor plan (this file)
 │   ├── dev_environment_setup.md     # Development environment guide
 │   └── refactor_changelog.md        # Log of duplicated functions & tests
 │
-├── examples/                         # Existing examples (refactored gradually)
+├── examples/                        # Existing examples (refactored gradually)
 │   ├── Basic calculations PCA and PLS/
 │   ├── ...
 │   └── (update imports as modules are completed)

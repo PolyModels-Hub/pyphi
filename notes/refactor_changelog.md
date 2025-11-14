@@ -12,4 +12,4 @@ Entries should include:
 
 ## Entries
 
-- _No refactor entries yet._
+- 2025-01-15: Duplicated `mean`, `std`, and `meancenterscale` into `src/pyphi/utils.py`; added comprehensive tests in `tests/test_utils.py`; legacy implementations remain in `pyphi.py`.
