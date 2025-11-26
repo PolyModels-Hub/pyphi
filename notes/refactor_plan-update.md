@@ -35,8 +35,9 @@ pyphi/                                # Project root
 │   ├── test_diagnostics.py
 │   └── test_exports.py
 │
-├── notes/                           # Documentation & refactor tracking
+├── notes/                            # Documentation & refactor tracking
 │   ├── refactor_plan-update.md      # Full refactor plan (this file)
+│   ├── library_swap_analysis.md     # Analysis of functions to replace with stdlib
 │   ├── dev_environment_setup.md     # Development environment guide
 │   └── refactor_changelog.md        # Log of duplicated functions & tests
 │
@@ -45,7 +46,7 @@ pyphi/                                # Project root
 │   ├── ...
 │   └── (update imports as modules are completed)
 │
-├── pyproject.toml                    # Poetry configuration
+├── pyproject.toml                     # Poetry configuration
 ├── poetry.lock                       # Locked dependencies
 ├── pytest.ini                        # Pytest configuration
 ├── setup.py                          # Setup configuration
@@ -91,6 +92,42 @@ For **every function** listed below:
    - Example script verified
    - Legacy implementation left in pyphi.py for compatibility"
    ```
+
+---
+
+## 🔄 Library Swap Strategy
+
+> **Reference:** See `notes/library_swap_analysis.md` for detailed analysis and code examples.
+
+During the refactor, several custom functions will be **replaced with standard library equivalents** from NumPy, SciPy, and Pandas. This reduces maintenance burden and improves reliability.
+
+### High-Priority Replacements (No New Dependencies)
+
+| Custom Function | Replacement | Library |
+|-----------------|-------------|---------|
+| `mean()` | `np.nanmean(axis=0, keepdims=True)` | NumPy |
+| `std()` | `np.nanstd(axis=0, keepdims=True, ddof=1)` | NumPy |
+| `f95()` | `scipy.stats.f.ppf(0.95, dfn, dfd)` | SciPy |
+| `f99()` | `scipy.stats.f.ppf(0.99, dfn, dfd)` | SciPy |
+| `spe_ci()` | `scipy.stats.chi2.ppf()` | SciPy |
+| `single_score_conf_int()` | `scipy.stats.t.ppf()` | SciPy |
+| `spectra_savgol()` | `scipy.signal.savgol_filter()` | SciPy |
+| `find()` | `np.where()` | NumPy |
+| `unique()` | `pd.unique()` | Pandas |
+
+### Functions to Keep Custom
+
+- `n2z()` / `z2n()` - Simple NaN utilities, no standard equivalent
+- `hott2()` / `spe()` / `contributions()` - Domain-specific diagnostics
+- `varimax_()` - Compact implementation, works well as-is
+- Core PCA/PLS algorithms - Unique NIPALS with missing data handling
+
+### Benefits
+
+- **~230 lines of code removed** (net reduction)
+- **No new dependencies** - all replacements use existing NumPy, SciPy, Pandas
+- **Exact calculations** - scipy.stats vs hardcoded lookup tables
+- **Better edge case handling** - battle-tested implementations
 
 ---
 
@@ -140,26 +177,26 @@ In this phase we **duplicate** the utility helpers from the monolithic `pyphi.py
 - [ ] `clean_htmls()` - Remove HTML files from directory
 - [ ] `clean_empty_rows()` - Remove empty rows from data matrix
 - [ ] `clean_low_variances()` - Remove low-variance columns
-- [ ] `find()` - Find indices matching a condition
-- [ ] `unique()` - Get unique values from DataFrame column
+- [ ] `find()` - Find indices matching a condition → **REPLACE: use `np.where()` wrapper**
+- [ ] `unique()` - Get unique values from DataFrame column → **REPLACE: use `pd.unique()`**
 - [ ] `isin_ordered_col0()` - Check if values are in ordered column
 - [ ] `reconcile_rows()` - Align rows across multiple DataFrames
 - [ ] `reconcile_rows_to_columns()` - Align rows to column identifiers
 
 #### Private / Semi-Private Functions (still duplicated now; moved to `_internal.py` later):
-- [ ] `mean()` - Calculate mean (handles NaN)
-- [ ] `std()` - Calculate standard deviation (handles NaN)
-- [ ] `z2n()` - Convert zeros back to NaN
-- [ ] `n2z()` - Convert NaN to zeros for computation
-- [ ] `scores_conf_int_calc()` - Helper for confidence interval calculation
+- [ ] `mean()` - Calculate mean (handles NaN) → **REPLACE: use `np.nanmean()`**
+- [ ] `std()` - Calculate standard deviation (handles NaN) → **REPLACE: use `np.nanstd(ddof=1)`**
+- [ ] `z2n()` - Convert zeros back to NaN (keep custom)
+- [ ] `n2z()` - Convert NaN to zeros for computation (keep custom)
+- [ ] `scores_conf_int_calc()` - Helper for confidence interval calculation → **SIMPLIFY: use scipy.stats**
 - [ ] `ma57_dummy_check()` - Check IPOPT MA57 availability (keep in `__init__.py` later)
-- [ ] `meancenterscale()` - Mean center and/or scale data
-- [ ] `np2D2pyomo()` - Convert 2D NumPy array to Pyomo format
-- [ ] `np1D2pyomo()` - Convert 1D NumPy array to Pyomo format
-- [ ] `spe_ci()` - SPE confidence interval calculation
-- [ ] `single_score_conf_int()` - Score confidence interval calculation
-- [ ] `f99()` - F-distribution 99th percentile
-- [ ] `f95()` - F-distribution 95th percentile
+- [ ] `meancenterscale()` - Mean center and/or scale data → **SIMPLIFY: use numpy nan-functions**
+- [ ] `np2D2pyomo()` - Convert 2D NumPy array to Pyomo format (keep custom)
+- [ ] `np1D2pyomo()` - Convert 1D NumPy array to Pyomo format (keep custom)
+- [ ] `spe_ci()` - SPE confidence interval calculation → **REPLACE: use `scipy.stats.chi2.ppf()`**
+- [ ] `single_score_conf_int()` - Score confidence interval calculation → **REPLACE: use `scipy.stats.t.ppf()`**
+- [ ] `f99()` - F-distribution 99th percentile → **REPLACE: use `scipy.stats.f.ppf(0.99, ...)`**
+- [ ] `f95()` - F-distribution 95th percentile → **REPLACE: use `scipy.stats.f.ppf(0.95, ...)`**
 - [ ] `_Ab_btbinv()` - Matrix projection helper (move to `_internal.py` during consolidation)
 
 > **Note:** Once all modules are duplicated and verified, a later "Consolidation" milestone will replace the legacy implementations in `pyphi.py` with thin wrappers or full removals.
@@ -167,26 +204,32 @@ In this phase we **duplicate** the utility helpers from the monolithic `pyphi.py
 **Test Strategy:**
 - Unit tests for each duplicated function with edge cases (NaN, missing data, etc.)
 - Property-based tests for mathematical functions
+- **Comparison tests** for library-swapped functions (verify old vs new produce same results within tolerance)
+- Edge case tests for library replacements: empty arrays, all-NaN columns, single values
 - Integration tests with the core models later
 
 ---
 
 ### Phase 2: `src/pyphi/spectra.py` - Spectral Preprocessing
 
+> **⏸️ DEFERRED** (2025-11-26): Skipping spectral functions for now. Can be revisited later as needed.
+> Spectral preprocessing is a specialized domain and not critical for core PCA/PLS functionality.
+
 **Dependencies**: `utils.py` (may use for scaling)
 
 #### Public Functions:
-- [ ] `spectra_snv()` - Standard Normal Variate preprocessing
-- [ ] `spectra_savgol()` - Savitzky-Golay filter
-- [ ] `spectra_mean_center()` - Mean center spectra
-- [ ] `spectra_autoscale()` - Autoscale spectra
-- [ ] `spectra_baseline_correction()` - Baseline correction
-- [ ] `spectra_msc()` - Multiplicative Scatter Correction
+- [ ] `spectra_snv()` - Standard Normal Variate preprocessing → **SIMPLIFY: use `np.mean()`/`np.std()` directly**
+- [ ] `spectra_savgol()` - Savitzky-Golay filter → **REPLACE: use `scipy.signal.savgol_filter()`**
+- [ ] `spectra_mean_center()` - Mean center spectra → **SIMPLIFY: use `np.nanmean()`**
+- [ ] `spectra_autoscale()` - Autoscale spectra → **SIMPLIFY: use `np.nanstd()`**
+- [ ] `spectra_baseline_correction()` - Baseline correction (keep custom - simple operation)
+- [ ] `spectra_msc()` - Multiplicative Scatter Correction (keep custom - domain-specific)
 
 **Test Strategy:**
 - Test with real spectral data (NIR example)
 - Verify preprocessing doesn't corrupt data
 - Integration test with spectral PLS example
+- Compare library-based implementation outputs with legacy outputs
 
 ---
 
@@ -334,26 +377,28 @@ These are specialized model structures built on PLS/PCA foundations.
 **ALL INTERNAL FUNCTIONS GO HERE** - Functions starting with `_` or only used internally
 
 ```python
-# Functions from various modules
-_mean()
-_std()
-_z2n()
-_n2z()
-_Ab_btbinv()
-_varimax_()
-_scores_conf_int_calc()
-_ma57_dummy_check()
-_meancenterscale()
-_np2D2pyomo()
-_np1D2pyomo()
-_spe_ci()
-_single_score_conf_int()
-_f99()
-_f95()
-_findstr()
-_evalvar()
-_writeeq()
-# ... any other internal helpers
+# Functions from various modules (after library swaps)
+# KEPT AS CUSTOM:
+_z2n()                  # Simple NaN utility - no standard equivalent
+_n2z()                  # Simple NaN utility - no standard equivalent
+_Ab_btbinv()            # Matrix projection helper - domain-specific
+_varimax_()             # Varimax rotation - compact, adequate
+_ma57_dummy_check()     # Pyomo/IPOPT check - domain-specific
+_np2D2pyomo()           # Pyomo converter - no standard equivalent
+_np1D2pyomo()           # Pyomo converter - no standard equivalent
+_findstr()              # String parser for polynomial builder
+_evalvar()              # Expression evaluator for polynomial builder
+_writeeq()              # Equation formatter for polynomial builder
+
+# REPLACED WITH LIBRARY CALLS (thin wrappers for backward compat):
+_mean()                 # → np.nanmean(axis=0, keepdims=True)
+_std()                  # → np.nanstd(axis=0, keepdims=True, ddof=1)
+_f95()                  # → scipy.stats.f.ppf(0.95, dfn, dfd)
+_f99()                  # → scipy.stats.f.ppf(0.99, dfn, dfd)
+_spe_ci()               # → scipy.stats.chi2.ppf()
+_single_score_conf_int()# → scipy.stats.t.ppf()
+_scores_conf_int_calc() # → simplified using scipy.stats
+_meancenterscale()      # → simplified using numpy nan-functions
 ```
 
 **Benefits:**
@@ -361,6 +406,7 @@ _writeeq()
 - Easier to refactor internals without breaking user code
 - IDE autocomplete won't clutter with internal functions
 - Clear ownership of helper functions
+- **~230 lines removed** by using library equivalents (see `library_swap_analysis.md`)
 
 ---
 
@@ -707,6 +753,8 @@ The refactor is complete when:
 8. ✅ Private API is clearly marked (leading `_`)
 9. ✅ Public API is documented in `__init__.py`
 10. ✅ Future contributors understand the structure
+11. ✅ Library swaps implemented (see `library_swap_analysis.md`)
+12. ✅ Comparison tests verify library swaps produce equivalent results
 
 ---
 
@@ -720,6 +768,17 @@ The refactor is complete when:
 - Easier testing and CI/CD
 - Industry-standard layout
 - Supports PyPI publication
+
+### Why Library Swaps?
+
+As part of this refactor, we replace custom implementations with standard library equivalents where appropriate. See `notes/library_swap_analysis.md` for full details.
+
+**Key benefits:**
+- **Reduced maintenance:** ~230 fewer lines of custom code
+- **Improved reliability:** Battle-tested scipy.stats implementations
+- **Exact calculations:** scipy.stats provides exact F, chi-squared, and t-distribution quantiles vs interpolated lookup tables
+- **No new dependencies:** All replacements use existing NumPy, SciPy, Pandas
+- **Better edge case handling:** Standard libraries handle corner cases robustly
 
 ### Backward Compatibility
 
@@ -738,13 +797,20 @@ The key to maintaining backward compatibility:
 - Export functions
 
 **Internal** (leading `_`, not in `__all__`):
-- `_mean`, `_std`
-- `_Ab_btbinv`
-- `_varimax_`
-- `_findstr`, `_evalvar`, `_writeeq`
-- `_meancenterscale`
-- `_np2D2pyomo`, `_np1D2pyomo`
+- `_Ab_btbinv` - Matrix projection helper
+- `_varimax_` - Varimax rotation algorithm
+- `_findstr`, `_evalvar`, `_writeeq` - Polynomial builder helpers
+- `_np2D2pyomo`, `_np1D2pyomo` - Pyomo converters
+- `_z2n`, `_n2z` - NaN utilities
+- `_ma57_dummy_check` - Solver check
 - Helper functions that users shouldn't call directly
+
+**Library Wrappers** (thin wrappers around stdlib, internal):
+- `_mean` → `np.nanmean()`
+- `_std` → `np.nanstd()`
+- `_f95`, `_f99` → `scipy.stats.f.ppf()`
+- `_spe_ci` → `scipy.stats.chi2.ppf()`
+- `_meancenterscale` → simplified with numpy nan-functions
 
 ### When to Make Functions Public vs Private
 
@@ -765,10 +831,13 @@ The key to maintaining backward compatibility:
 ## 🚀 Next Steps
 
 1. ✅ Review this refined plan
-2. Start with **Setup Phase** to create directory structure
-3. Begin **Phase 1** with `_internal.py` and `utils.py`
-4. Follow the TDD workflow strictly
-5. Commit frequently with clear messages
-6. Test integrations early and often
-7. Document as you go
+2. ✅ Review library swap analysis (`notes/library_swap_analysis.md`)
+3. Start with **Setup Phase** to create directory structure
+4. Begin **Phase 1** with `_internal.py` and `utils.py`
+   - Implement library swaps for `mean()`, `std()`, `f95()`, `f99()` first
+   - Add comparison tests to verify equivalence
+5. Follow the TDD workflow strictly
+6. Commit frequently with clear messages
+7. Test integrations early and often
+8. Document as you go
 
