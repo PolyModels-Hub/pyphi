@@ -8,7 +8,7 @@ Created on Thu Aug  8 09:54:43 2019
 import pandas as pd
 import numpy as np
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 
 # Data taken from:
 # Dyrby, M., Engelsen, S.B., Nørgaard, L., Bruhn, M. and Lundsberg-Nielsen, L., 2002. 

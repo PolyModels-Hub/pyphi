@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from pyphi import batch as phibatch
 import matplotlib.pyplot as plt
-import pyphi_plots as pp
+from pyphi import plots as pp
         
 
 bdata        = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='Trajectories')

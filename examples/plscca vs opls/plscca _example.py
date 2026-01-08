@@ -1,6 +1,6 @@
 #%% example from Yu and MacGregor paper
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

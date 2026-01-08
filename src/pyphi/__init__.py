@@ -85,6 +85,7 @@ from .diagnostics import (
 )
 
 from . import batch
+from . import plots
 
 __version__ = "0.1.0"
 __author__ = "Ethan Lavialle <ethan.lavialle@polymodelshub.com>"
@@ -150,4 +151,5 @@ __all__ = [
     "bootstrap_pls_pred",
     "build_polynomial",
     "batch",
+    "plots",
 ]

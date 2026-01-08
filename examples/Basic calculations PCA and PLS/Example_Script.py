@@ -7,7 +7,7 @@ Example script to build a PCA and a PLS model
 import pandas as pd
 import numpy as np
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 
 
 # Load the data from Excel

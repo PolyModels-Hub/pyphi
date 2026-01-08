@@ -6,7 +6,7 @@ Created on Mon Apr 25 18:40:39 2022
 """
 
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 import pandas as pd
 
 

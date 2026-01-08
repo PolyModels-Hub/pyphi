@@ -8,7 +8,7 @@ Created on Mon Apr 11 20:53:21 2022
 import pandas as pd
 import numpy as np
 from pyphi import batch as phibatch
-import pyphi_plots as pp
+from pyphi import plots as pp
 import matplotlib.pyplot as plt
 
 bdata=pd.read_excel('Batch Film Coating.xlsx')

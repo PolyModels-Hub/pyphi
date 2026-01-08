@@ -6,7 +6,7 @@ Created on Sat Apr  1 19:54:20 2023
 """
 import pandas as pd
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 
 #Load, clean, make sure data matches
 jr,materials=phi.parse_materials('jrpls_tpls_dataset.xlsx','Materials')

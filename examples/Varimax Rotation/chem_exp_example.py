@@ -8,7 +8,7 @@ Created on Fri Mar 18 09:45:58 2022
 import pandas as pd
 import numpy as np
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 import matplotlib.pyplot as plt
 
 

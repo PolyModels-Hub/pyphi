@@ -8,7 +8,7 @@ to handle missing data
 import pandas as pd
 import numpy as np
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 
 # Load the data from Excel
 Cars_Features_MD    = pd.read_excel('Automobiles PCA w MD.xls', 'Features', index_col=None, na_values=np.nan)

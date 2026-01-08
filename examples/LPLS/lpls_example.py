@@ -7,7 +7,7 @@ Created on Sun Apr  9 11:45:35 2023
 
 import pandas as pd
 import pyphi as phi
-import pyphi_plots as pp
+from pyphi import plots as pp
 
 
 #This is how to fit a basic LPLS model and do some plots
