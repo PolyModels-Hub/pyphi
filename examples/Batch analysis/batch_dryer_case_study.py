@@ -8,7 +8,7 @@ Created on Tue Apr 26 22:33:38 2022
 
 import pandas as pd
 import numpy as np
-import pyphi_batch as phibatch
+from pyphi import batch as phibatch
 import matplotlib.pyplot as plt
 import pyphi_plots as pp
         
