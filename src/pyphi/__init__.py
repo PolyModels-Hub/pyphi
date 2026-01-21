@@ -84,8 +84,29 @@ from .diagnostics import (
     build_polynomial,
 )
 
+# Spectral preprocessing functions
+from .spectra import (
+    spectra_snv,
+    spectra_savgol,
+    spectra_mean_center,
+    spectra_autoscale,
+    spectra_baseline_correction,
+    spectra_msc,
+)
+
+# Export and format conversion functions
+from .exports import (
+    export_2_gproms,
+    adapt_pls_4_pyomo,
+    conv_pls_2_eiot,
+    cat_2_matrix,
+    parse_materials,
+)
+
 from . import batch
 from . import plots
+from . import spectra
+from . import exports
 
 __version__ = "0.1.0"
 __author__ = "Ethan Lavialle <ethan.lavialle@polymodelshub.com>"
@@ -150,6 +171,22 @@ __all__ = [
     "bootstrap_pls",
     "bootstrap_pls_pred",
     "build_polynomial",
+    # Spectral preprocessing
+    "spectra_snv",
+    "spectra_savgol",
+    "spectra_mean_center",
+    "spectra_autoscale",
+    "spectra_baseline_correction",
+    "spectra_msc",
+    # Exports and conversions
+    "export_2_gproms",
+    "adapt_pls_4_pyomo",
+    "conv_pls_2_eiot",
+    "cat_2_matrix",
+    "parse_materials",
+    # Modules
     "batch",
     "plots",
+    "spectra",
+    "exports",
 ]

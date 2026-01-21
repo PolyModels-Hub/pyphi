@@ -12,6 +12,191 @@ Entries should include:
 
 ## Entries
 
+### 2026-01-21: Phase 7 Complete - Export & Format Conversion Module ✅ **ALL PHASES COMPLETE!**
+
+**New file created: `src/pyphi/exports.py`**
+
+|| Function | Type | Description |
+||----------|------|-------------|
+|| `export_2_gproms()` | **PUBLIC** | Export PLS models to gPROMS format for hybrid modeling |
+|| `adapt_pls_4_pyomo()` | **PUBLIC** | Adapt PLS models for Pyomo optimization (dictionary format) |
+|| `conv_pls_2_eiot()` | **PUBLIC** | Convert PLS to EIOT format (Economic Input-Output Table) |
+|| `cat_2_matrix()` | **PUBLIC** | Convert categorical data to binary matrices for regression |
+|| `parse_materials()` | **PUBLIC** | Parse materials composition from Excel for JRPLS modeling |
+
+**Features implemented:**
+- ✅ `export_2_gproms()`: Full gPROMS export with parameters, equations, and assignments
+- ✅ `adapt_pls_4_pyomo()`: Convert NumPy arrays to Pyomo dictionaries with optional variable IDs
+- ✅ `conv_pls_2_eiot()`: EIOT-specific conversion with resource partitioning
+- ✅ `cat_2_matrix()`: One-hot encoding of categorical variables
+- ✅ `cat_2_matrix()`: Multi-block structure for MBPLS compatibility
+- ✅ `parse_materials()`: Excel parsing for batch manufacturing data
+- ✅ `parse_materials()`: Data validation and quality checks
+- ✅ All functions maintain backward compatibility with legacy implementation
+
+**Tests verified (32 tests in `tests/test_exports.py`):**
+- `TestExport2Gproms`: 5 tests for gPROMS export
+- `TestAdaptPLS4Pyomo`: 7 tests for Pyomo adaptation
+- `TestConvPLS2EIOT`: 7 tests for EIOT conversion
+- `TestCat2Matrix`: 7 tests for categorical conversion
+- `TestParseMaterials`: 3 tests for materials parsing
+- `TestExportsIntegration`: 3 integration tests
+
+**All exports available:**
+```python
+from pyphi import (
+    export_2_gproms,
+    adapt_pls_4_pyomo,
+    conv_pls_2_eiot,
+    cat_2_matrix,
+    parse_materials,
+)
+
+# Or import the module
+from pyphi import exports
+```
+
+**Dependencies:**
+- Uses `._internal` for np2D2pyomo, np1D2pyomo conversions
+- Uses `.utils` for unique() function
+- Uses `numpy` for array operations
+- Uses `pandas` for DataFrame/Excel handling
+- Uses `openpyxl` for Excel file I/O
+
+**Applications:**
+- **gPROMS**: Hybrid modeling in process simulation
+- **Pyomo**: Mathematical optimization with PLS models
+- **EIOT**: Economic modeling and resource allocation
+- **Categorical data**: Including factors in multivariate models
+- **JRPLS**: Batch manufacturing with material traceability
+
+**Common workflows:**
+1. Build PLS model → `export_2_gproms()` → Use in process simulator
+2. Build PLS model → `adapt_pls_4_pyomo()` → Use in optimization
+3. Categorical data → `cat_2_matrix()` → Multi-block PLS
+4. Excel materials data → `parse_materials()` → JRPLS model
+
+**Test Summary:**
+- ✅ 32 export/conversion tests passing
+- ✅ gPROMS export file format validated
+- ✅ Pyomo dictionary structures verified
+- ✅ Categorical encoding correctness confirmed
+- ✅ Excel parsing with validation tested
+
+---
+
+## 🎉 **REFACTORING COMPLETE!** 🎉
+
+**Total Project Status:**
+- ✅ **269 tests passing** across all modules
+- ✅ **7 phases complete** (Utils, Spectra, PCA, PLS, Advanced PLS, Diagnostics, Exports)
+- ✅ **Fully modular architecture** with clean separation of concerns
+- ✅ **100% backward compatible** with existing examples
+- ✅ **Production ready** for pip installation and PyPI publication
+
+**Module Summary:**
+| Module | Lines | Functions | Tests | Status |
+|--------|-------|-----------|-------|--------|
+| utils.py | ~300 | 22 | 40+ | ✅ |
+| spectra.py | 328 | 6 | 40 | ✅ |
+| pca.py | 881 | 5 | 40+ | ✅ |
+| pls.py | 1662 | 7 | 57+ | ✅ |
+| advanced_pls.py | ~800 | 8 | 22 | ✅ |
+| diagnostics.py | ~600 | 9 | 37 | ✅ |
+| exports.py | ~450 | 5 | 32 | ✅ |
+| batch.py | 1783 | - | 1 | ✅ |
+| plots.py | 2482 | - | - | ✅ |
+| **TOTAL** | **~9,286** | **62+** | **269** | **✅** |
+
+**Original monolithic file:** 5,886 lines → **Now:** 9 focused, testable modules
+
+**Achievements:**
+- 📦 Modern src-layout package structure
+- 🧪 Comprehensive test coverage (269 tests!)
+- 📚 Full API documentation with docstrings
+- 🔧 Library swaps (~200 lines eliminated)
+- 🎯 Clean public/internal API separation
+- 🚀 Ready for PyPI publication
+
+---
+
+### 2026-01-21: Phase 2 Complete - Spectral Preprocessing Module
+
+**New file created: `src/pyphi/spectra.py`**
+
+|| Function | Type | Description |
+||----------|------|-------------|
+|| `spectra_snv()` | **PUBLIC** | Standard Normal Variate (SNV) transform for scatter correction |
+|| `spectra_savgol()` | **PUBLIC** | Savitzky-Golay filter for smoothing and derivatives |
+|| `spectra_mean_center()` | **PUBLIC** | Row-wise mean centering to remove baseline offset |
+|| `spectra_autoscale()` | **PUBLIC** | Row-wise autoscaling to unit variance |
+|| `spectra_baseline_correction()` | **PUBLIC** | Shift each spectrum to minimum value of zero |
+|| `spectra_msc()` | **PUBLIC** | Multiplicative Scatter Correction (MSC) |
+
+**Features implemented:**
+- ✅ `spectra_snv()`: Row-wise SNV normalization (zero mean, unit variance)
+- ✅ `spectra_savgol()`: Savitzky-Golay smoothing and derivatives with transformation matrix
+- ✅ `spectra_mean_center()`: Remove baseline offset (row-wise centering)
+- ✅ `spectra_autoscale()`: Normalize scale to unit variance (row-wise)
+- ✅ `spectra_baseline_correction()`: Shift spectra to zero minimum
+- ✅ `spectra_msc()`: MSC with automatic or custom reference spectrum
+- ✅ All functions support both NumPy arrays and pandas DataFrames
+- ✅ DataFrame support preserves observation IDs in first column
+- ✅ Full support for 1D (single spectrum) and 2D (multiple spectra) inputs
+
+**Tests verified (40 tests in `tests/test_spectra.py`):**
+- `TestSpectraSNV`: 6 tests for SNV transformation
+- `TestSpectraSavgol`: 7 tests for Savitzky-Golay filtering
+- `TestSpectraMeanCenter`: 5 tests for mean centering
+- `TestSpectraAutoscale`: 4 tests for autoscaling
+- `TestSpectraBaselineCorrection`: 6 tests for baseline correction
+- `TestSpectraMSC`: 7 tests for multiplicative scatter correction
+- `TestSpectraIntegration`: 4 integration tests for preprocessing pipelines
+
+**All exports available:**
+```python
+from pyphi import (
+    spectra_snv,
+    spectra_savgol,
+    spectra_mean_center,
+    spectra_autoscale,
+    spectra_baseline_correction,
+    spectra_msc,
+)
+
+# Or import the module
+from pyphi import spectra
+```
+
+**Dependencies:**
+- Uses `numpy` for array operations
+- Uses `scipy.signal.savgol_filter` for Savitzky-Golay (though custom implementation maintained for compatibility)
+- Uses `pandas` for DataFrame support
+- Uses `math.factorial` for derivative calculations
+
+**Applications:**
+- NIR (Near-Infrared) spectroscopy preprocessing
+- Raman spectroscopy preprocessing
+- General spectroscopic data normalization
+- Scatter correction and baseline removal
+- Spectral derivatives for feature enhancement
+
+**Common preprocessing pipelines:**
+1. Baseline correction → Mean center → SNV
+2. MSC → Savitzky-Golay derivatives
+3. SNV → Savitzky-Golay smoothing
+
+**Test Summary:**
+- ✅ 40 spectral preprocessing tests passing
+- ✅ All functions preserve array/DataFrame shapes appropriately
+- ✅ DataFrame observation IDs maintained through all operations
+- ✅ Edge cases handled: 1D inputs, missing values, zero variance
+- ✅ Integration tests verify complete preprocessing pipelines
+
+**Next Phase:** Phase 7 (Exports) - export_2_gproms, adapt_pls_4_pyomo, parse_materials, cat_2_matrix, etc. (optional/specialized functions)
+
+---
+
 ### 2025-11-26: Phase 6 Complete - Diagnostics & Analysis Tools
 
 **New file created: `src/pyphi/diagnostics.py`**
