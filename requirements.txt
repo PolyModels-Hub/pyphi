@@ -1,9 +1,0 @@
-bokeh
-matplotlib
-numpy
-openpyxl
-pandas
-pyomo
-scipy
-spyder
-xlrd

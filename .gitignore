@@ -171,9 +171,9 @@ local_settings.py
 # Poetry and dependency management
 poetry.lock  # Optional: uncomment if you want to exclude poetry.lock
 
-# Legacy module files (kept for reference, excluded from tracking)
-# Uncomment if you want to exclude legacy files from tracking
-# pyphi_batch.py
-# pyphi_plots.py
-# pyphi_legacy.py
+# Legacy module files (now deleted, excluded to prevent accidental re-addition)
+pyphi_batch.py
+pyphi_plots.py
+pyphi_legacy.py
+pyphi.py
 

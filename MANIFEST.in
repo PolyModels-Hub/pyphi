@@ -1,0 +1,47 @@
+# MANIFEST.in
+# Specifies additional files to include in source distributions
+
+# Include important documentation
+include README.md
+include LICENSE
+include CODE_OF_CONDUCT.md
+include pyproject.toml
+include pytest.ini
+
+# Include user guide PDF
+include docs/Basic usage of PyPhi rel 4.pdf
+
+# Include development notes
+recursive-include notes *.md
+
+# Include examples and their data
+recursive-include examples *.py
+recursive-include examples *.xlsx
+recursive-include examples *.xls
+recursive-include examples *.MAT
+recursive-include examples *.md
+
+# Exclude build artifacts and cache
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude *.swp
+
+# Exclude test cache and coverage files
+prune tests/__pycache__
+prune .pytest_cache
+prune htmlcov
+
+# Exclude generated documentation (users should build their own)
+prune docs/_build
+prune docs/_modules
+prune docs/_static
+prune docs/_sources
+
+# Exclude legacy files
+exclude pyphi_legacy.py
+exclude pyphi_plots.py
+exclude pyphi_batch.py
+exclude pyphi.py
+exclude setup.py
