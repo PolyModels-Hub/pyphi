@@ -11,9 +11,6 @@ include pytest.ini
 # Include user guide PDF
 include docs/Basic usage of PyPhi rel 4.pdf
 
-# Include development notes
-recursive-include notes *.md
-
 # Include examples and their data
 recursive-include examples *.py
 recursive-include examples *.xlsx
