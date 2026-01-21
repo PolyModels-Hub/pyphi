@@ -1,10 +1,6 @@
-# Modules
-## pyphi Release 4.0
-Phi toolbox for multivariate analysis by Sal Garcia (salvadorgarciamunoz@gmail.com, sgarciam@ic.ac.uk)
-
 # PyPhi - Multivariate Analysis Toolbox
 
-**Version 0.1.0** - Modular Architecture
+**Version 0.1.0 (Release 4.0)** - Modular Architecture
 
 A comprehensive Python library for chemometrics, multivariate analysis, and model-based diagnostics.
 
@@ -99,6 +95,52 @@ Y = np.random.randn(50, 3)
 plsobj = phi.pls(X, Y, 3)
 print("✓ PyPhi installed successfully!")
 ```
+
+---
+
+## 🔧 Optional External Dependencies
+
+### IPOPT or GAMS (for NLP-based missing data algorithms)
+
+PyPhi can handle missing data using advanced NLP optimization. This requires either IPOPT or GAMS:
+
+**Option 1: IPOPT (Recommended)**
+
+Install via Conda (easiest):
+```bash
+conda install -c conda-forge ipopt
+```
+
+Or download binaries:
+- **Windows:** Download from [IPOPT releases page](https://github.com/coin-or/Ipopt/releases), extract, and add the `IPOPT\bin` folder to your system PATH (or copy files to working directory)
+- **Mac/Linux:** `conda install -c conda-forge ipopt`, download from [IPOPT releases page](https://github.com/coin-or/Ipopt/releases), or [compile using coinbrew](https://coin-or.github.io/Ipopt/INSTALL.html#COINBREW)
+
+**Option 2: GAMS**
+
+If GAMS is installed, PyPhi will automatically use it to run IPOPT. Make sure GAMS executables are in your system PATH.
+
+**Option 3: NEOS Server (Automatic Fallback)**
+
+If neither IPOPT nor GAMS is detected, PyPhi will submit optimization models to the NEOS server remotely. Set your email:
+
+```python
+import os
+os.environ["NEOS_EMAIL"] = "youremail@domain.com"
+```
+
+### Verify IPOPT Installation
+
+Run the example script to test missing data handling:
+```bash
+python examples/Basic\ calculations\ PCA\ and\ PLS/Example_Script_testing_MD_by_NLP.py
+```
+
+### Adding IPOPT to System PATH
+
+- **Windows (temporary):** `set PATH=C:\Path\To\ipopt\bin;%PATH%`
+- **Windows (persistent):** `setx PATH=C:\Path\To\ipopt\bin;%PATH%`
+- **Mac/Linux:** `export PATH=/path/to/ipopt:$PATH` (add to `.profile` or `.*rc` file for persistence)
+- **Conda environments:** After activating, use `conda env config vars set` with your OS-specific command
 
 ---
 
@@ -201,34 +243,6 @@ pyphi/
 
 ---
 
-## 🔧 Optional Dependencies
-
-### IPOPT (for NLP-based missing data handling)
-
-**Recommended installation:**
-```bash
-# Using Conda (easiest)
-conda install -c conda-forge ipopt
-
-# Or download binaries from:
-# https://github.com/coin-or/Ipopt/releases
-```
-
-**Alternative: GAMS**
-```bash
-# If GAMS is installed, PyPhi will use it automatically
-# Ensure GAMS executables are in your system PATH
-```
-
-### NEOS Server (fallback)
-If IPOPT/GAMS are not available, PyPhi will use the NEOS server for optimization:
-```python
-import os
-os.environ['NEOS_EMAIL'] = 'your.email@domain.com'
-```
-
----
-
 ## 🧪 Testing
 
 PyPhi includes a comprehensive test suite with **269 tests**:
@@ -304,27 +318,5 @@ Refactoring and modernization by Ethan Lavialle and Carlos Perez-Galvan.
 PyPhi builds on the excellent work of the NumPy, SciPy, Pandas, and Pyomo communities.
 
 ---
-
-## Optional External Dependencies
-- IPOPT as an executable in your system path or GAMS python module or GAMS executable in yoru system path.
-  - Windows: ```conda install -c conda-forge IPOPT=3.11.1``` or download from [IPOPT releases page](https://github.com/coin-or/Ipopt/releases), extract and add the IPOPT\bin folder to your system path or add all files to your working directory.
-  - Mac/Linux: ```conda install -c conda-forge IPOPT```, download from [IPOPT releases page](https://github.com/coin-or/Ipopt/releases), or [Compile using coinbrew](https://coin-or.github.io/Ipopt/INSTALL.html#COINBREW).
-  
-  - if GAMS is installed, pyphi will run ipopt via GAMS, make sure the GAMS executables are reachable through the system PATH
-
-- If IPOPT is not detected, pyphi will submit the pyomo models to the NEOS server to solve them remotely.
-  - To use the NEOS server, the environment variable "NEOS_EMAIL" must be assigned a valid email. This can be done outside of python using set/set/export or use ```import os
-  os.environ["NEOS_EMAIL"] = youremail@domain.com```
-  in your code.
-
-
-Run the script '''Example_Script_testing_MD_by_NLP.py''' to verify that pyphi can execute IPOPT
-
-Adding a folder to your system path:
- - Windows: temporary ```set PATH=C:\Path\To\ipopt\bin;%PATH%``` or persistent ```setx PATH=C:\Path\To\ipopt\bin;%PATH%```.
- - Mac/Linux: ```export PATH=/path/to/ipopt:$PATH```, add to .profile/.*rc file to make persistent.
- - Both via Conda: after activating your environment, use ```conda env config vars set``` and your OS-specific set or export command.
-
- ---
 
 **Made with ❤️ for the chemometrics and data science community**
