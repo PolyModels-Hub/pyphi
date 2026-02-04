@@ -17,8 +17,11 @@ from pyphi import plots as pp
 import numpy as np
 from bokeh.io import show, output_file
 from bokeh.plotting import figure
+from pathlib import Path
 
-NIRData=spio.loadmat('NIRdata_tablets.MAT')
+_HERE = Path(__file__).resolve().parent
+
+NIRData=spio.loadmat(_HERE / 'NIRdata_tablets.MAT')
 X = np.array(NIRData['Matrix'][:,3:])
 Y = np.array(NIRData['Matrix'][:,0])
 

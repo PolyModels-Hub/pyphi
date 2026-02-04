@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import pyphi as phi
 from pyphi import plots as pp
+from pathlib import Path
 
 # Data taken from:
 # Dyrby, M., Engelsen, S.B., Nørgaard, L., Bruhn, M. and Lundsberg-Nielsen, L., 2002. 
@@ -16,10 +17,12 @@ from pyphi import plots as pp
 # tablet using near-infrared (NIR) transmittance and NIR FT-Raman spectra. 
 # Applied spectroscopy, 56(5), pp.579-585.
 
+_HERE = Path(__file__).resolve().parent
+
 # Load the data from Excel
-NIR_Spectra     = pd.read_excel('NIR.xlsx', 'NIR', index_col=None, na_values=np.nan)
-API_Conc          = pd.read_excel('NIR.xlsx', 'Y', index_col=None, na_values=np.nan)
-Tablet_Categories = pd.read_excel('NIR.xlsx', 'Categorical', index_col=None, na_values=np.nan)
+NIR_Spectra     = pd.read_excel(_HERE / 'NIR.xlsx', 'NIR', index_col=None, na_values=np.nan)
+API_Conc          = pd.read_excel(_HERE / 'NIR.xlsx', 'Y', index_col=None, na_values=np.nan)
+Tablet_Categories = pd.read_excel(_HERE / 'NIR.xlsx', 'Categorical', index_col=None, na_values=np.nan)
 
 #Use pyphi_plots to plot spectra
 pp.plot_spectra(NIR_Spectra,plot_title='NIR Spectra',tab_title='Spectra Raw',

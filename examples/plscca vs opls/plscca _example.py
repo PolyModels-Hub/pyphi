@@ -5,14 +5,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
 
-
-
-X_df = pd.read_excel('OPLS Test Data.xlsx','X')
-Y_df = pd.read_excel('OPLS Test Data.xlsx','Y')
-Tcv_opls=pd.read_excel('OPLS scores and loadings.xlsx','Tcv')
-Pcv_opls=pd.read_excel('OPLS scores and loadings.xlsx','Pcv')
+X_df = pd.read_excel(_HERE / 'OPLS Test Data.xlsx','X')
+Y_df = pd.read_excel(_HERE / 'OPLS Test Data.xlsx','Y')
+Tcv_opls=pd.read_excel(_HERE / 'OPLS scores and loadings.xlsx','Tcv')
+Pcv_opls=pd.read_excel(_HERE / 'OPLS scores and loadings.xlsx','Pcv')
 
 X=X_df.values
 Y=Y_df.values

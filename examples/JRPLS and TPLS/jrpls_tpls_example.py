@@ -7,18 +7,21 @@ Created on Sat Apr  1 19:54:20 2023
 import pandas as pd
 import pyphi as phi
 from pyphi import plots as pp
+from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
 
 #Load, clean, make sure data matches
-jr,materials=phi.parse_materials('jrpls_tpls_dataset.xlsx','Materials')
+jr,materials=phi.parse_materials(_HERE / 'jrpls_tpls_dataset.xlsx','Materials')
 x=[]
 for m in materials:
-    x_=pd.read_excel( 'jrpls_tpls_dataset.xlsx',sheet_name=m)
+    x_=pd.read_excel(_HERE / 'jrpls_tpls_dataset.xlsx',sheet_name=m)
     x.append(x_)
     
 xc,jrc=phi.reconcile_rows_to_columns(x, jr)
 
-quality=pd.read_excel('jrpls_tpls_dataset.xlsx',sheet_name='QUALITY')
-process=pd.read_excel('jrpls_tpls_dataset.xlsx',sheet_name='PROCESS')
+quality=pd.read_excel(_HERE / 'jrpls_tpls_dataset.xlsx',sheet_name='QUALITY')
+process=pd.read_excel(_HERE / 'jrpls_tpls_dataset.xlsx',sheet_name='PROCESS')
 
 jrc.append(process)
 jrc.append(quality)

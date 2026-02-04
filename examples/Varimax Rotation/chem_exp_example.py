@@ -10,9 +10,11 @@ import numpy as np
 import pyphi as phi
 from pyphi import plots as pp
 import matplotlib.pyplot as plt
+from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
 
-ra_dataset=pd.read_excel('chemical_experiments_dataset.xlsx',sheet_name='data')
+ra_dataset=pd.read_excel(_HERE / 'chemical_experiments_dataset.xlsx',sheet_name='data')
 
 ra_dataset,ecols=phi.clean_low_variances(ra_dataset)
 

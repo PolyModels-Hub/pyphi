@@ -8,9 +8,12 @@ import pyphi as phi
 import pandas as pd
 import matplotlib.pyplot as plt
 import warnings
+from pathlib import Path
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-ex_data=pd.read_excel('data.xlsx')
+_HERE = Path(__file__).resolve().parent
+
+ex_data=pd.read_excel(_HERE / 'data.xlsx')
 factors=[
     'Variable A',
     'Var B',

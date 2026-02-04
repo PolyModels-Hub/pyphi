@@ -8,15 +8,17 @@ Created on Mon Apr 25 18:40:39 2022
 import pyphi as phi
 from pyphi import plots as pp
 import pandas as pd
+from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
 
-x1_data=pd.read_excel('MBDataset.xlsx','X1')
-x2_data=pd.read_excel('MBDataset.xlsx','X2')
-x3_data=pd.read_excel('MBDataset.xlsx','X3')
-x4_data=pd.read_excel('MBDataset.xlsx','X4')
-x5_data=pd.read_excel('MBDataset.xlsx','X5')
-x6_data=pd.read_excel('MBDataset.xlsx','X6')
-y_data=pd.read_excel('MBDataset.xlsx','Y')
+x1_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X1')
+x2_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X2')
+x3_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X3')
+x4_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X4')
+x5_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X5')
+x6_data=pd.read_excel(_HERE / 'MBDataset.xlsx','X6')
+y_data=pd.read_excel(_HERE / 'MBDataset.xlsx','Y')
 
 mbdata={'X1':x1_data,
         'X2':x2_data,

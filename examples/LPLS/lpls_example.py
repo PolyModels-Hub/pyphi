@@ -8,12 +8,14 @@ Created on Sun Apr  9 11:45:35 2023
 import pandas as pd
 import pyphi as phi
 from pyphi import plots as pp
+from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
 
 #This is how to fit a basic LPLS model and do some plots
-X=pd.read_excel('lpls_dataset.xlsx',sheet_name='X')
-R=pd.read_excel('lpls_dataset.xlsx',sheet_name='R')
-Y=pd.read_excel('lpls_dataset.xlsx',sheet_name='Y')
+X=pd.read_excel(_HERE / 'lpls_dataset.xlsx',sheet_name='X')
+R=pd.read_excel(_HERE / 'lpls_dataset.xlsx',sheet_name='R')
+Y=pd.read_excel(_HERE / 'lpls_dataset.xlsx',sheet_name='Y')
 
 lpls_obj = phi.lpls(X,R,Y,4)
 

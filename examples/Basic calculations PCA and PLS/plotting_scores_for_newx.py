@@ -9,12 +9,15 @@ import pandas as pd
 import numpy as np
 import pyphi as phi
 from pyphi import plots as pp
+from pathlib import Path
+
+_HERE = Path(__file__).resolve().parent
 
 # Load the data from Excel
-Cars_Features_MD    = pd.read_excel('Automobiles PCA w MD.xls', 'Features', index_col=None, na_values=np.nan)
-Cars_Performance    = pd.read_excel('Automobiles PLS.xls', 'Performance', index_col=None, na_values=np.nan)
-Cars_Features       = pd.read_excel('Automobiles PLS.xls', 'Features', index_col=None, na_values=np.nan)
-Cars_CLASSID        = pd.read_excel('Automobiles PCA w MD.xls', 'CLASSID', index_col=None, na_values=np.nan)
+Cars_Features_MD    = pd.read_excel(_HERE / 'Automobiles PCA w MD.xls', 'Features', index_col=None, na_values=np.nan)
+Cars_Performance    = pd.read_excel(_HERE / 'Automobiles PLS.xls', 'Performance', index_col=None, na_values=np.nan)
+Cars_Features       = pd.read_excel(_HERE / 'Automobiles PLS.xls', 'Features', index_col=None, na_values=np.nan)
+Cars_CLASSID        = pd.read_excel(_HERE / 'Automobiles PCA w MD.xls', 'CLASSID', index_col=None, na_values=np.nan)
 
 Cars_Features_new = Cars_Features.iloc[:100,:]
 Cars_Features      = Cars_Features.iloc[100:,:]

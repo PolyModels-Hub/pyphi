@@ -5,13 +5,16 @@ Created on Mon Apr 11 20:53:21 2022
 @author: salva
 """
 
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from pyphi import batch as phibatch
 from pyphi import plots as pp
 import matplotlib.pyplot as plt
 
-bdata=pd.read_excel('Batch Film Coating.xlsx')
+_HERE = Path(__file__).resolve().parent
+_XLSX = _HERE / "Batch Film Coating.xlsx"
+bdata = pd.read_excel(_XLSX)
 
 #Plot variables for all batches
 #plot all variables

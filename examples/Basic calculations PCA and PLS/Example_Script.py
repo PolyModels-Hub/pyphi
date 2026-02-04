@@ -8,12 +8,14 @@ import pandas as pd
 import numpy as np
 import pyphi as phi
 from pyphi import plots as pp
+from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
 
 # Load the data from Excel
-Cars_Features    = pd.read_excel('Automobiles PLS.xls', 'Features', index_col=None, na_values=np.nan)
-Cars_Performance = pd.read_excel('Automobiles PLS.xls', 'Performance', index_col=None, na_values=np.nan)
-Cars_CLASSID     = pd.read_excel('Automobiles PLS.xls', 'CLASSID', index_col=None, na_values=np.nan)
+Cars_Features    = pd.read_excel(_HERE / 'Automobiles PLS.xls', 'Features', index_col=None, na_values=np.nan)
+Cars_Performance = pd.read_excel(_HERE / 'Automobiles PLS.xls', 'Performance', index_col=None, na_values=np.nan)
+Cars_CLASSID     = pd.read_excel(_HERE / 'Automobiles PLS.xls', 'CLASSID', index_col=None, na_values=np.nan)
 
 # Build a PCA model with 3 PC's, cross validating by elements removing 5% of the data per round
 pcaobj=phi.pca(Cars_Features,3,cross_val=5)

@@ -6,6 +6,7 @@ Created on Tue Apr 26 22:33:38 2022
 """
 
 
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from pyphi import batch as phibatch
@@ -13,11 +14,14 @@ import matplotlib.pyplot as plt
 from pyphi import plots as pp
         
 
-bdata        = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='Trajectories')
-cqa          = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='ProductQuality')
-char         = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='ProcessCharacteristics')
-initial_chem = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='InitialChemistry')
-cat          = pd.read_excel('Batch Dryer Case Study.xlsx',sheet_name='classifiers')
+_HERE = Path(__file__).resolve().parent
+_XLSX = _HERE / "Batch Dryer Case Study.xlsx"
+
+bdata        = pd.read_excel(_XLSX, sheet_name="Trajectories")
+cqa          = pd.read_excel(_XLSX, sheet_name="ProductQuality")
+char         = pd.read_excel(_XLSX, sheet_name="ProcessCharacteristics")
+initial_chem = pd.read_excel(_XLSX, sheet_name="InitialChemistry")
+cat          = pd.read_excel(_XLSX, sheet_name="classifiers")
 
 phibatch.plot_var_all_batches(bdata)
 #%%
