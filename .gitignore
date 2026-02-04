@@ -177,4 +177,5 @@ pyphi_plots.py
 pyphi_legacy.py
 pyphi.py
 
+# Development notes (internal documentation, not for distribution)
 notes/
