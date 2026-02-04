@@ -64,7 +64,7 @@ A comprehensive Python library for chemometrics, multivariate analysis, and mode
 
 ### Quick Install (Recommended)
 
-#### From Local Repository
+#### For local development
 ```bash
 # Clone the repository
 git clone https://github.com/salvadorgarciamunoz/pyphi.git
@@ -76,6 +76,14 @@ pip install -e .
 # Or install with Poetry (recommended for development)
 poetry install
 ```
+
+This workflow is intended for **contributors / local development** (i.e., working on PyPhi itself).
+
+- **Poetry (optional)**: Poetry is a dependency manager that uses `pyproject.toml` / `poetry.lock` to create reproducible dev environments. If you don’t want to use Poetry, `pip install -e .` is enough for most contributor workflows.
+- **Get Poetry**: See the official docs at [Poetry: Installation](https://python-poetry.org/docs/#installation).
+  - **macOS**: If you use Homebrew, `brew install poetry` (see [Homebrew](https://brew.sh/)).
+  - **Windows**: If you use Scoop, `scoop install poetry` (see [Scoop](https://scoop.sh/)).
+  - **All OS (recommended)**: Install via `pipx` (isolated Python app installs): [pipx](https://pypa.github.io/pipx/).
 
 #### From PyPI (Future)
 ```bash
